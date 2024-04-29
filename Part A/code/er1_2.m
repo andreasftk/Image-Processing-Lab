@@ -1,7 +1,7 @@
 close all;
 clear all;
 % Read the image
-img = imread('lenna.jpg');
+img = imread('../images/lenna.jpg');
 figure;
 imshow(uint8(img));
 

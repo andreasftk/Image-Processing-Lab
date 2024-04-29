@@ -2,7 +2,7 @@ clear all;
 close all;
 
 % Read the image and convert to grayscale
-leaf_image = rgb2gray(imread('leaf.jpg'));
+leaf_image = rgb2gray(imread('../images/leaf.jpg'));
 
 % Rotate the image by 60 degrees
 rotated_leaf_image = imrotate(leaf_image, 60);

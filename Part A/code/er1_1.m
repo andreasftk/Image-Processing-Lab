@@ -2,7 +2,7 @@ clear all;
 close all;
 
 % Read the image and convert to grayscale
-leaf_image = rgb2gray(imread('leaf.jpg'));
+leaf_image = rgb2gray(imread('../images/leaf.jpg'));
 
 % Define threshold and create binary image
 threshold = 220;
