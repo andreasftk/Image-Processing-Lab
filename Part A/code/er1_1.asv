@@ -2,11 +2,23 @@ clear all;
 close all;
 
 % Read the image and convert to grayscale
-leaf_image = rgb2gray(imread('leaf.jpg'));
+original_image = imread('../images/leaf.jpg');
+leaf_image = rgb2gray(imread('../images/leaf.jpg'));
+
+figure;
+subplot(1,2,1);
+imshow(leaf_image);
+title('Grayscale Image');
 
 % Define threshold and create binary image
 threshold = 220;
 binary_leaf_image = leaf_image >= threshold;
+
+subplot(1,2,2);
+imshow(binary_leaf_image);
+title('Thresholded Image');
+
+
 
 % Find the boundary of the leaf in the binary image
 row = 105;
@@ -14,11 +26,11 @@ col = 259;
 boundaries = bwtraceboundary(binary_leaf_image, [col row], 'N');
 
 % Plot the boundary on the binary image
-figure;
-imshow(binary_leaf_image);
+figure
+imshow(original_image);
 hold on;
 plot(boundaries(:, 2), boundaries(:, 1), 'r', 'LineWidth', 2);
-title('Boundary on Binary Image');
+title('Boundary on Original Image');
 
 complex = boundaries(:, 2) + 1i * boundaries(:, 1);
 complex_descriptors = fftshift(fft(complex));
@@ -44,8 +56,11 @@ for i = 1:length(percentages)
     reconstructed_contour = ifft(ifftshift(reconstructed_descriptors));
     
     % Plot reconstructed contour
-    figure;
+    figure
+imshow();
+hold on;
     plot(real(reconstructed_contour), imag(reconstructed_contour), 'r', 'LineWidth', 2);
     axis equal;
     title(sprintf('Reconstructed Contour using %d%% of coefficients', percentages(i)));
 end
+

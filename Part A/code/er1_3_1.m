@@ -20,7 +20,6 @@ desired_noise_variance = variance_val / desired_snr_linear;
 % Add white Gaussian noise with the calculated variance
 noisy_image = imnoise(image, 'gaussian', 0, desired_noise_variance);
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 signal_power = mean(image(:).^2); % Calculate the power of the image signal
 
@@ -31,6 +30,7 @@ noise_power = signal_power / (10^(SNR_dB/10));
 noise = sqrt(noise_power) * randn(size(image));
 
 noisy_image = image + noise;
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
