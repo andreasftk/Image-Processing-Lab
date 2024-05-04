@@ -66,14 +66,11 @@ title('Noisy Image with SNR 7 dB');
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Perform Wiener deconvolution
-estimated_noise_power = desired_noise_power;
-estimated_kernel = gaussian_kernel; % Assuming known degradation filter (Gaussian blur)
-restored_image = deconvwnr(noisy_image, estimated_kernel, estimated_noise_power);
+% Wiener deconvolution
+restored_image = deconvwnr(noisy_image, gaussian_kernel, 1/desired_noise_power);
 
 % Clip the values to ensure they are within the valid range [0, 255]
 restored_image = uint8(max(min(restored_image, 255), 0));
-
 
 % Display the restored image
 figure;

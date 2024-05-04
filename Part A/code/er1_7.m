@@ -51,7 +51,7 @@ segmentedImage = maskedCoins + maskedBackground;
 % Display the segmented image
 figure;
 imshow(segmentedImage);
-title('Segmented Image');
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % c)
@@ -67,7 +67,7 @@ maskedWhiteBackground = bsxfun(@times, whiteBackground, uint8(backgroundMask)); 
 segmentedImageWithWhiteBackground = maskedCoins + maskedWhiteBackground;
 
 % Display the segmented image with white background
-figure;
+figure
 imshow(segmentedImageWithWhiteBackground);
 title('Segmented Image with White Background');
 
@@ -83,7 +83,7 @@ segmentedRGB = bsxfun(@times, RGB, uint8(binaryImage)) + maskedWhiteBackground;
 % Display the segmented image with each coin highlighted in a different color on white background
 figure;
 imshow(segmentedRGB);
-title('Segmented Image with Each Coin Highlighted on White Background');
+title('Coins Highlighted, White Background');
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -91,6 +91,7 @@ title('Segmented Image with Each Coin Highlighted on White Background');
 % Calculate the diameter of each coin
 props = regionprops(labeledImage,'Centroid', 'EquivDiameter');
 
+figure;
 imshow(segmentedRGB);
 hold on;
 
@@ -109,6 +110,6 @@ for i = 1:numCoins
     %     'Color', 'r', 'FontSize', 8, 'HorizontalAlignment', 'center', 'VerticalAlignment', 'middle');
 end
 
-title('Segmented Image with Each Coin Diameter Displayed');
+title('Centroids and Diameter');
 hold off;
 
