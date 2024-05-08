@@ -1,5 +1,6 @@
 clear all;
 close all;
+
 input_signal=rgb2gray((imread('../images/lenna.jpg')));
 [N, M] = size(input_signal);
 input_signal = padarray(input_signal, [mod(N,32), mod(M,32)], 0, 'post');
@@ -31,6 +32,7 @@ for i = 1:length(p_range)
     mse_values(i) = mean((input_signal(:) - I2(:)).^2);
 end
 
+imwrite(I2,'../images/test.jpg');
 % Plot the curve
 figure;
 plot(p_range, mse_values, 'bo-');
