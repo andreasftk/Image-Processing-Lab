@@ -1,46 +1,44 @@
+
 clear all;
 close all;
 image = imread('../images/board.png');
 image = im2double(image);
 
 %%%%%%%%%%%%%%%%%
-% Calculate the mean and variance of the image
-mean_val = mean(image(:));
-variance_val = var(image(:));
+
 
 % Desired SNR in dB
 desired_snr_db = 15;
 
 % Convert SNR from dB to linear scale
-desired_snr_linear = 10^(desired_snr_db/10);
+desired_snr_linear = 10^(desired_snr_db / 10);
 
 % Calculate the noise variance required for desired SNR
+% Assuming 'variance_val' is the variance of the original image signal
+variance_val = var(image(:));
 desired_noise_variance = variance_val / desired_snr_linear;
 
 % Add white Gaussian noise with the calculated variance
 noisy_image = imnoise(image, 'gaussian', 0, desired_noise_variance);
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% signal_power = mean(image(:).^2); % Calculate the power of the image signal
-% 
-% % Calculate the desired noise power based on SNR = 10*log10(signal_power / noise_power)
-% SNR_dB = 15; % Desired SNR in dB
-% noise_power = signal_power / (10^(SNR_dB/10));
-% 
-% noise = sqrt(noise_power) * randn(size(image));
-% 
-% noisy_image = image + noise;
+% Calculate the noise added to the image
+noise = noisy_image - image;
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
+% Plot the distribution of the noise
 figure;
-imshow(image), title('Original Image');
+histogram(noise(:), 'Normalization', 'pdf');
+title('Distribution of the Noise');
+xlabel('Noise Amplitude');
+ylabel('Probability Density Function (PDF)');
+
+% Display the original and noisy images for reference
 figure;
-imshow(noisy_image), title('Noisy Image (SNR 15dB)');
-
-
-imwrite(noisy_image, '../images/noisy_board_15db.png');
+subplot(1, 2, 1);
+imshow(image, []);
+title('Original Image');
+subplot(1, 2, 2);
+imshow(noisy_image, []);
+title('Noisy Image');
 
 
 %%%%%%
@@ -49,7 +47,7 @@ smoothed_board = movmean(noisy_image, [window_size window_size]);
 
 figure;
 imshow(smoothed_board)
-title('Smoothed Image using Moving Average Filter')
+title('Filtered Image using Moving Average Filter')
 
 %%%%%%
 window_size = 4;

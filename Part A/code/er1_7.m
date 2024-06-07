@@ -16,6 +16,8 @@ otsuThreshold = graythresh(coins);
 
 % Perform thresholding
 binaryImage = imbinarize(coins, otsuThreshold);
+binaryImage = imfill(binaryImage,'holes');
+
 
 figure;
 bar(bins, counts, 'hist');
@@ -66,6 +68,7 @@ maskedWhiteBackground = bsxfun(@times, whiteBackground, uint8(backgroundMask)); 
 % Combine masked coins and white background
 segmentedImageWithWhiteBackground = maskedCoins + maskedWhiteBackground;
 
+
 % Display the segmented image with white background
 figure
 imshow(segmentedImageWithWhiteBackground);
@@ -79,6 +82,7 @@ RGB = label2rgb(labeledImage, 'hsv', 'k', 'shuffle');
 
 % Overlay the labeled regions on top of the white background
 segmentedRGB = bsxfun(@times, RGB, uint8(binaryImage)) + maskedWhiteBackground;
+
 
 % Display the segmented image with each coin highlighted in a different color on white background
 figure;

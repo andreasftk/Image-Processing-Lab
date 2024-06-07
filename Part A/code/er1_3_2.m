@@ -20,19 +20,19 @@ imshow(noisy_image);
 title('Noisy Image (with 30% impulse noise)');
 
 %%%%%%
-window_size = 5; % Adjust the window size as needed
+window_size = 7; % Adjust the window size as needed
 filtered_board = movmean(noisy_image, [window_size window_size]);
 
 filtered_board= uint8(filtered_board);
 
 figure;
 imshow(filtered_board)
-title('Smoothed Image using Moving Average Filter');
+title('Filtered Image using Moving Average Filter');
 
 %%%%%%
-window_size = 5;
+window_size = 6;
 filtered_board = medfilt2(noisy_image, [window_size window_size]);
 
 figure;
 imshow(filtered_board)
-title('Filtered Image Median Filter')
+title('Filtered Image using Median Filter')

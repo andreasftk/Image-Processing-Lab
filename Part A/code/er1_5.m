@@ -3,6 +3,7 @@ close all;
 
 % Read the original image
 image = imread('../images/new_york.png');
+image = im2double(image);
 
 % Display the original image
 figure;
@@ -23,7 +24,6 @@ degraded_image = imfilter(image, gaussian_kernel, 'conv', 'replicate');
 figure;
 imshow(degraded_image);
 title('Degraded Image');
-
 
 % Plot the impulse response (shock response)
 figure;
@@ -48,16 +48,19 @@ colorbar;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Generate white Gaussian noise with appropriate power based on SNR
-SNR_dB = 7; % Desired SNR in dB
-noise_power = var(double(degraded_image(:))); % Calculate noise power
-desired_noise_power = noise_power / (10^(SNR_dB/10)); % Calculate desired noise power
+% Desired SNR in dB
+desired_snr_db = 7;
 
-% Add noise to the degraded image
-noisy_image = double(degraded_image) + sqrt(desired_noise_power) * randn(size(degraded_image));
+% Convert SNR from dB to linear scale
+desired_snr_linear = 10^(desired_snr_db / 10);
 
-% Clip the values to ensure they are within the valid range [0, 255]
-noisy_image = uint8(max(min(noisy_image, 255), 0));
+% Calculate the noise variance required for desired SNR
+% Assuming 'variance_val' is the variance of the original image signal
+variance_val = var(image(:));
+desired_noise_variance = variance_val / desired_snr_linear;
+
+% Add white Gaussian noise with the calculated variance
+noisy_image = imnoise(image, 'gaussian', 0, desired_noise_variance);
 
 % Display the noisy image
 figure;
@@ -67,12 +70,11 @@ title('Noisy Image with SNR 7 dB');
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Wiener deconvolution
-restored_image = deconvwnr(noisy_image, gaussian_kernel, 1/desired_noise_power);
+noise_power_ratio = desired_noise_variance / var(noisy_image(:)); % noise-to-signal power ratio
+restored_image = deconvwnr(noisy_image, gaussian_kernel, noise_power_ratio);
 
-% Clip the values to ensure they are within the valid range [0, 255]
-restored_image = uint8(max(min(restored_image, 255), 0));
+% Clip the values to ensure they are within the valid range [0, 1]
+restored_image = max(min(restored_image, 1), 0);
 
-% Display the restored image
-figure;
-imshow(restored_image);
-title('Restored Image using Wiener Deconvolution');
+
+

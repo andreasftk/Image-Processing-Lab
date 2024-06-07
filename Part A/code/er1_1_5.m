@@ -14,9 +14,17 @@ rotated_original_image = imrotate(original_image, 60);
 slid_leaf_image = circshift(rotated_leaf_image, [100, 60]);
 slid_original_image = circshift(rotated_original_image, [100, 60]);
 
+figure;
+imshow(slid_original_image);
+title('Slid and Rotated Image');
+
 % Define threshold and create binary image
 threshold = 220;
 binary_slid_leaf_image = slid_leaf_image >= threshold;
+
+figure;
+imshow(binary_slid_leaf_image);
+title('Thresholded Image');
 
 % Find the boundary of the leaf in the binary image
 row = 336;
